@@ -133,59 +133,14 @@ window.addEventListener('DOMContentLoaded', function() {
 	message.loading = 'Load...';
 	message.failure = 'Что-то пошло не так...';
 
-	let formElement = document.getElementsByClassName('main-form')[0],
-		input = formElement.getElementsByTagName('input'),
+	let form = document.getElementsByClassName('main-form')[0],
+		input = form.getElementsByTagName('input'),
 		statusMessage = document.createElement('div');
 		statusMessage.classList.add('status');
 
-		formElement.addEventListener('submit', function(event) {
+		form.addEventListener('submit', function(event) {
 			event.preventDefault();
-			formElement.appendChild(statusMessage);
-
-			//AJAX
-
-			let request = new XMLHttpRequest();
-			
-			request.onreadystatechange = function() {
-				if(request.readyState < 4){
-					statusMessage.innerHTML = message.loading;
-				} else if(request.readyState == 4){
-					if(request.status == 200){
-						statusMessage.innerHTML = message.success;
-					}
-					else{
-						statusMessage.innerHTML = message.failure;
-					}
-				}
-			}
-			request.open("POST", "server.php", true);
-
-			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-
-			request.send(new FormData(formElement));
-
-
-
-
-			for(let i = 0; i < input.length; i++){
-				input[i].value = ''
-				// очищаем поля ввода
-			}
-		})
-
-
-	let mailForm = document.getElementsByClassName('contact-form')[0],
-		mail_Input = mailForm.getElementsByTagName('input')[0],
-		phone_Input = mailForm.getElementsByTagName('input')[1],
-		statusMailMessage = document.createElement('div');
-
-		statusMailMessage.classList.add('status');
-
-
-		mailForm.addEventListener('submit', function(event) {
-			event.preventDefault();
-			mailForm.appendChild(statusMailMessage);
+			form.appendChild(statusMessage);
 
 			//AJAX
 
@@ -194,18 +149,18 @@ window.addEventListener('DOMContentLoaded', function() {
 
 			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-			let formData = new FormData(mailForm);
+			let formData = new FormData(form);
 
 			request.send(formData);
 			request.onreadystatechange = function() {
 				if(request.readyState < 4){
-					statusMailMessage.innerHTML = message.loading;
-				} else if (request.readyState === 4){
-					if(request.status === 200 && request.status < 300){
-						statusMailMessage.innerHTML = message.success;
+					statusMessage.innerHTML = message.loading;
+				} else if (request.readyState == 4){
+					if(request.status == 200){
+						statusMessage.innerHTML = message.success;
 					}
 					else{
-						statusMailMessage.innerHTML = message.failure;
+						statusMessage.innerHTML = message.failure;
 					}
 				}
 			}
