@@ -172,8 +172,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
 	let mailForm = document.getElementsByClassName('contact-form')[0],
-		mail_Input = mailForm.getElementsByTagName('input')[0],
-		phone_Input = mailForm.getElementsByTagName('input')[1],
+		mail_Input = mailForm.getElementsByTagName('input'),
 		statusMailMessage = document.createElement('div');
 
 		statusMailMessage.classList.add('status');
@@ -205,10 +204,11 @@ window.addEventListener('DOMContentLoaded', function() {
 					}
 				}
 			}
-			for(let i = 0; i < input.length; i++){
-				input[i].value = ''
+			for(let i = 0; i < mail_Input.length; i++){
+				mail_Input[i].value = '';
 				// очищаем поля ввода
 			}
+			
 		})
 })	
 

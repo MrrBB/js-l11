@@ -133,14 +133,59 @@ window.addEventListener('DOMContentLoaded', function() {
 	message.loading = 'Load...';
 	message.failure = 'Что-то пошло не так...';
 
-	let form = document.getElementsByClassName('main-form')[0],
-		input = form.getElementsByTagName('input'),
+	let formElement = document.getElementsByClassName('main-form')[0],
+		input = formElement.getElementsByTagName('input'),
 		statusMessage = document.createElement('div');
 		statusMessage.classList.add('status');
 
-		form.addEventListener('submit', function(event) {
+		formElement.addEventListener('submit', function(event) {
 			event.preventDefault();
-			form.appendChild(statusMessage);
+			formElement.appendChild(statusMessage);
+
+			//AJAX
+
+			let request = new XMLHttpRequest();
+			
+			request.onreadystatechange = function() {
+				if(request.readyState < 4){
+					statusMessage.innerHTML = message.loading;
+				} else if(request.readyState === 4){
+					if(request.status === 200){
+						statusMessage.innerHTML = message.success;
+					}
+					else{
+						statusMessage.innerHTML = message.failure;
+					}
+				}
+			}
+			request.open("POST", "server.php", true);
+
+			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+
+			request.send(new FormData(formElement));
+
+
+
+
+			for(let i = 0; i < input.length; i++){
+				input[i].value = ''
+				// очищаем поля ввода
+			}
+		})
+
+
+	let mailForm = document.getElementsByClassName('contact-form')[0],
+		mail_Input = mailForm.getElementsByTagName('input')[0],
+		phone_Input = mailForm.getElementsByTagName('input')[1],
+		statusMailMessage = document.createElement('div');
+
+		statusMailMessage.classList.add('status');
+
+
+		mailForm.addEventListener('submit', function(event) {
+			event.preventDefault();
+			mailForm.appendChild(statusMailMessage);
 
 			//AJAX
 
@@ -149,23 +194,23 @@ window.addEventListener('DOMContentLoaded', function() {
 
 			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-			let formData = new FormData(form);
+			let formData = new FormData(mailForm);
 
 			request.send(formData);
 			request.onreadystatechange = function() {
 				if(request.readyState < 4){
-					statusMessage.innerHTML = message.loading;
-				} else if (request.readyState == 4){
-					if(request.status == 200){
-						statusMessage.innerHTML = message.success;
+					statusMailMessage.innerHTML = message.loading;
+				} else if (request.readyState === 4){
+					if(request.status === 200 && request.status < 300){
+						statusMailMessage.innerHTML = message.success;
 					}
 					else{
-						statusMessage.innerHTML = message.failure;
+						statusMailMessage.innerHTML = message.failure;
 					}
 				}
 			}
-			for(let i = 0; i < input.length; i++){
-				input[i].value = ''
+			for(let i = 0; i < mail_Input.length; i++){
+				mail_Input[i].value = ''
 				// очищаем поля ввода
 			}
 		})
